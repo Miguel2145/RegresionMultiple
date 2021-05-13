@@ -10,20 +10,21 @@ package examples.bookTrading2;
  * @author migue
  */
 public class MultiR {
-    public static void RegresionLinealM() {
-        double[] x1 = new double[] {41.9,43.4,43.9,44.5,47.3,47.5,47.9,50.2,52.8,53.2,56.7,57.0,63.5,65.3,71.1,77.0,77.8};
+    
+    public static void RegresionLinealM(int Num, int Tam) {
+                double[] x1 = new double[] {41.9,43.4,43.9,44.5,47.3,47.5,47.9,50.2,52.8,53.2,56.7,57.0,63.5,65.3,71.1,77.0,77.8};
 		double[] x2 = new double[] {29.1,29.3,29.5,29.7,29.9,30.3,30.5,30.7,30.8,30.9,31.5,31.7,31.9,32.0,32.1,32.5,32.9};
-		double[] y = new double[] {251.3,251.3,248.3,267.5,273.0,276.5,270.3,274.9,285.0,290.0,297.0,302.5,304.5,309.3,321.7,330.7,349.0};
-		
+      		double[] y = new double[] {251.3,251.3,248.3,267.5,273.0,276.5,270.3,274.9,285.0,290.0,297.0,302.5,304.5,309.3,321.7,330.7,349.0};
 		int n;
+                Num+=-1;
 		n=y.length;
-		double[][] X=new double[n][3];
-		double[][] XT=new double[3][n];
+		double[][] X=new double[n][Tam];
+		double[][] XT=new double[Tam][n];
 		
 		//Obtener X
-                System.out.println("Matriz X                    Matriz Y");
-		for(int i=0;i<n;i++){
-			for(int j=0;j<3;j++){
+                System.out.println("Matriz X                        Matriz Y minimo 251");
+		for(int i=Num;i<Num+Tam;i++){
+			for(int j=0;j<Tam;j++){
 				if(j==0){
 				X[i][j]=1;
 				}else if(j==1){
@@ -32,12 +33,12 @@ public class MultiR {
 					X[i][j]=x2[i];
 				} System.out.print(X[i][j]+"\t");
                                 
-			};System.out.print("\t "+y[i]+"");System.out.println();
+			}System.out.print("\t "+y[i]+"");System.out.println();
 		}System.out.println();
 		//Obtener X'
                 System.out.println("Matriz X' o transpuesta de X\n");
-		for(int i=0;i<3;i++){
-			for(int j=0;j<n;j++){
+		for(int i=0;i<Tam;i++){
+			for(int j=Num;j<Num+Tam;j++){
 				if(i==0){
 					XT[i][j]=1;
 				}else if(i==1){
@@ -50,10 +51,10 @@ public class MultiR {
 		}System.out.println();
                 
 		//Multiplicacion de X'X
-		double[][] R=new double[3][3];
+		double[][] R=new double[Tam][Tam];
 		System.out.print("\nMatriz multiplicada de X'*X \n\n");
-		for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++){
+		for(int i=0;i<Tam;i++){
+			for(int j=0;j<Tam;j++){
 				for(int k=0;k<n;k++){
 					R[i][j]=R[i][j] + XT[i][k]*X[k][j];
 				}
@@ -64,18 +65,18 @@ public class MultiR {
 		double[][] I=invert(R);
 
 		//Multiplicacion X'Y
-		double[] R2=new double[3];
-		for(int i=0;i<3;i++){
+		double[] R2=new double[Tam];
+		for(int i=0;i<Tam;i++){
 			for(int j=0;j<n;j++){
 				R2[i]=R2[i] + XT[i][j]*y[j];
                                 
-			}System.out.print(String.format(".%.2f",R2[i] )+"    ");
+			}System.out.print(String.format("%.2f",R2[i] )+"    ");
 		}
 		
 		//Imprime inversa
 		System.out.print("\n\nMatrix Inversa de X'X o (X'X)^-1 \n\n");
-		for (int i=0; i<3; ++i) {
-                	for (int j=0; j<3; ++j){
+		for (int i=0; i<Tam; ++i) {
+                	for (int j=0; j<Tam; ++j){
 				System.out.print(String.format("%.2f", I[i][j])+"  \t");
 			}
 		System.out.print("\n");
@@ -83,24 +84,24 @@ public class MultiR {
 
 		System.out.print("\n\nMatriz multiplicada de X'Y: \n\n");
 		//Imprime X'Y
-		for(int i=0;i<3;i++){
-			System.out.print(R2[i]+"\n");
+		for(int i=0;i<Tam;i++){
+			System.out.print(String.format("%.2f", R2[i])+"\n");
 		}
 
 		System.out.print("\n\nEl resultado de la Regresion multiple es: \nYhat: ");
 		//Multiplicacion INV(X'X)X'Y = I*R2
-		double[] MLR=new double[3];
-		for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++){
+		double[] MLR=new double[Tam];
+		for(int i=0;i<Tam;i++){
+			for(int j=0;j<Tam;j++){
 				MLR[i]=MLR[i] + I[i][j]*R2[j];
 			}
+                       
 			if(i==0)System.out.print(String.format("%.2f", MLR[i])+"\t");
-			if(i==1)System.out.print(String.format("%.2f", MLR[i])+"\t");
-			if(i==2)System.out.print(String.format("%.2f", MLR[i])+"\t\n");
-		}
+			if(i>=1&& i<=(Tam-2))System.out.print(String.format("%.2f", MLR[i])+"x"+i+"\t");
+		} System.out.println(String.format("%.2f",MLR[Tam-1])+"x"+(Tam-1)+"\n");
 	}
     public static void result(double B0,double B1, double B2) {
-		System.out.println("yhat=ß0 + ß1X1 + ß1X2 \n="+String.format("%.2f", B0)+" + "+String.format("%.2f", B1)+"x1 + "+String.format("%.2f", B2)+"x2");
+		System.out.println("yhat=ß0 + ß1X1 + ß1X2 \n="+B0+" + "+B1+"x1 + "+ B2+"x2");
 	}
 
 public static double[][] invert(double a[][]){

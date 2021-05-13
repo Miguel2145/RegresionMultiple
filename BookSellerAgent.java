@@ -93,12 +93,13 @@ public class BookSellerAgent extends Agent {
 		addBehaviour(new OneShotBehaviour() {
 			public void action() {
 				catalogue.put(title, new Integer(price));
-				int X;
+				int X,Y;
 				X=Integer.parseInt(title);
+				Y=(price);
 				 MultiR f=new MultiR ();
 				 double[] x = new double[] {1,2,3,4,5,6,7,8,9};
     			double[] y = new double[] {23,26,30,34,43,48,52,57,58};
-    			 f.RegresionLinealM();
+    			 f.RegresionLinealM(X,Y);
 			}
 		} );
 	}

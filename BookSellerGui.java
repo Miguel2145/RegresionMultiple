@@ -47,7 +47,9 @@ class BookSellerGui extends JFrame {
 		p.add(new JLabel("Valor de X:"));
 		titleField = new JTextField(15);
 		p.add(titleField);
-		
+		p.add(new JLabel("Tamaño del Arreglo:"));
+		priceField = new JTextField(15);
+		p.add(priceField);
 		getContentPane().add(p, BorderLayout.CENTER);
 		
 		JButton addButton = new JButton("Add");
@@ -55,10 +57,10 @@ class BookSellerGui extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				try {
 					String title = titleField.getText().trim();
-					
-					myAgent.updateCatalogue(title, Integer.parseInt("0"));
+					String price = priceField.getText().trim();
+					myAgent.updateCatalogue(title, Integer.parseInt(price));
 					titleField.setText("");
-					
+					priceField.setText("");
 				}
 				catch (Exception e) {
 					JOptionPane.showMessageDialog(BookSellerGui.this, "Invalid values. "+e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); 
